@@ -1,0 +1,6 @@
+fastapi
+jinja2
+pandas
+polars
+great_tables
+uvicorn
