@@ -81,3 +81,9 @@ This guide will walk you through setting up a FastAPI application that renders a
    ```bash
    uvicorn main:app --reload
    ```
+   
+You should now see the table displayed in your browser at http://127.0.0.1:8000.
+
+![image](https://github.com/user-attachments/assets/4b059028-ea15-4ee5-a41e-279bb2aad058)
+
+   
