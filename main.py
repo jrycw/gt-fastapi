@@ -1,3 +1,5 @@
+from functools import cache
+
 import polars as pl
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
@@ -10,10 +12,15 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 
+@cache
+def get_sza():
+    return pl.from_pandas(sza)
+
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     sza_pivot = (
-        pl.from_pandas(sza)
+        get_sza()
         .filter((pl.col("latitude") == "20") & (pl.col("tst") <= "1200"))
         .select(pl.col("*").exclude("latitude"))
         .drop_nulls()

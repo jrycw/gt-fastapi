@@ -19,35 +19,40 @@ This guide will walk you through setting up a FastAPI application that renders a
     Define the `index` endpoint, which will generate an HTML table using `GT.as_raw_html()` and return it via `templates.TemplateResponse` when users visit the `/` route:
 
    ```python
-   @app.get("/", response_class=HTMLResponse)
-   async def index(request: Request):
-       sza_pivot = (
-           pl.from_pandas(sza)
-           .filter((pl.col("latitude") == "20") & (pl.col("tst") <= "1200"))
-           .select(pl.col("*").exclude("latitude"))
-           .drop_nulls()
-           .pivot(values="sza", index="month", on="tst", sort_columns=True)
-       )
+    @cache
+    def get_sza():
+        return pl.from_pandas(sza)
 
-       sza_gt = (
-           GT(sza_pivot, rowname_col="month")
-           .data_color(
-               domain=[90, 0],
-               palette=["rebeccapurple", "white", "orange"],
-               na_color="white",
-           )
-           .tab_header(
-               title="Solar Zenith Angles from 05:30 to 12:00",
-               subtitle=html("Average monthly values at a latitude of 20&deg;N."),
-           )
-           .sub_missing(missing_text="")
-       )
 
-       context = {"sza_gt": sza_gt.as_raw_html()}
+    @app.get("/", response_class=HTMLResponse)
+    async def index(request: Request):
+        sza_pivot = (
+            get_sza()
+            .filter((pl.col("latitude") == "20") & (pl.col("tst") <= "1200"))
+            .select(pl.col("*").exclude("latitude"))
+            .drop_nulls()
+            .pivot(values="sza", index="month", on="tst", sort_columns=True)
+        )
 
-       return templates.TemplateResponse(
-           request=request, name="index.html", context=context
-       )
+        sza_gt = (
+            GT(sza_pivot, rowname_col="month")
+            .data_color(
+                domain=[90, 0],
+                palette=["rebeccapurple", "white", "orange"],
+                na_color="white",
+            )
+            .tab_header(
+                title="Solar Zenith Angles from 05:30 to 12:00",
+                subtitle=html("Average monthly values at latitude of 20&deg;N."),
+            )
+            .sub_missing(missing_text="")
+        )
+
+        context = {"sza_gt": sza_gt.as_raw_html()}
+
+        return templates.TemplateResponse(
+            request=request, name="index.html", context=context
+        )
    ```
 
 3. **Set Up the Template**
