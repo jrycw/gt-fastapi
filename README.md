@@ -92,7 +92,9 @@ You should now see the table displayed in your browser at http://127.0.0.1:8000.
 ![image](https://github.com/user-attachments/assets/4b059028-ea15-4ee5-a41e-279bb2aad058)
 
 ### Alternative steps
-Alternatively, you could use the decorator approach to avoid calling `GT.as_raw_html()` for each `GT` instance. However, I'm unsure if this method is actually easier for developers.
+Alternatively, you could use the decorator approach to avoid calling `GT.as_raw_html()` for each `GT` instance. However, I'm unsure if this method is actually easier for developers. 
+
+**Please note that the `gt2fastapi` decorator is for demonstration purposes only and is not fully implemented. You will also need to handle additional information, such as [status codes, headers, media types, and background tasks](https://fastapi.tiangolo.com/reference/templating/?h=templatere#fastapi.templating.Jinja2Templates.TemplateResponse)**.
 
 ```python
 import inspect
