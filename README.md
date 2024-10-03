@@ -89,7 +89,7 @@ This guide will walk you through setting up a FastAPI application that renders a
    
 You should now see the table displayed in your browser at http://127.0.0.1:8000.
 
-![image](https://raw.githubusercontent.com/jrycw/gt-fastapi/refs/heads/master/gt-fastapi.png)
+![table](https://raw.githubusercontent.com/jrycw/gt-fastapi/refs/heads/master/gt-fastapi.png)
 
 ### Alternative steps
 Alternatively, you could use the decorator approach to avoid calling `GT.as_raw_html()` for each `GT` instance. However, I'm unsure if this method is actually easier for developers. 
